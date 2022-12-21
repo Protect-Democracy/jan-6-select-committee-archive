@@ -1,0 +1,18 @@
+{
+  "name": "jan-6-select-committee-archive",
+  "version": "0.0.1",
+  "description": "Archiving processes for the Jan 6 Select Committee materials",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Protect Democracy",
+  "license": "MIT",
+  "dependencies": {
+    "indian-ocean": "^4.0.3",
+    "node-fetch": "^3.3.0",
+    "node-html-parser": "^6.1.4",
+    "nodejs-file-downloader": "^4.10.3"
+  }
+}
