@@ -10,6 +10,7 @@
   "author": "Protect Democracy",
   "license": "MIT",
   "dependencies": {
+    "capture-website": "^3.2.0",
     "indian-ocean": "^4.0.3",
     "node-fetch": "^3.3.0",
     "node-html-parser": "^6.1.4",

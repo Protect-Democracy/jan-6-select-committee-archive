@@ -18,6 +18,7 @@ node index.js
 
 This will output to the `output/DATE/` directory the following:
 
+- `screenshot.png` - A screenshot of the page.
 - `document-urls.csv` - A CSV with the basic documents identified with their URLs.
 - `document-urls.json` - A JSON file with the same data as the CSV.
 - `documents.csv` - A CSV with the same data as `document-urls.csv` but with extra fields that describe what files have been downloaded locally.
