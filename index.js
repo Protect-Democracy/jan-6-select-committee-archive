@@ -1,15 +1,4 @@
 // Dependencies
-import siteArchive from "./lib/archive-site.js";
-import archiveMaterials from "./lib/archive-materials.js";
+import archive from "./lib/archive.js";
 
-// siteArchive(
-//   "https://judiciary.house.gov/the-impeachment-of-donald-john-trump/",
-//   "./output",
-//   "2020-01-01"
-// );
-
-archiveMaterials(
-  "https://judiciary.house.gov/the-impeachment-of-donald-john-trump/",
-  "./output",
-  "2020-01-01"
-);
+archive("output", "2022-01-01");

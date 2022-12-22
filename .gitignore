@@ -1,5 +1,6 @@
 .vscode/
 output/
+.DS_Store
 
 # From https://github.com/github/gitignore/blob/main/Node.gitignore
 

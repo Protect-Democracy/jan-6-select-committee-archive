@@ -11,9 +11,12 @@
   "license": "MIT",
   "dependencies": {
     "capture-website": "^3.2.0",
+    "dotenv": "^16.0.3",
     "indian-ocean": "^4.0.3",
+    "lodash-es": "^4.17.21",
     "node-fetch": "^3.3.0",
     "node-html-parser": "^6.1.4",
-    "nodejs-file-downloader": "^4.10.3"
+    "nodejs-file-downloader": "^4.10.3",
+    "youtube-dl-exec": "^2.1.10"
   }
 }
