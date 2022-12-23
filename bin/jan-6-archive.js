@@ -5,8 +5,10 @@
  */
 
 // Dependencies
+import { join as pathJoin } from "path";
 import meow from "meow";
 import archive from "../lib/archive.js";
+import archiveSite from "../lib/archive-site.js";
 
 // Setup CLI
 const cli = meow(
@@ -16,6 +18,7 @@ const cli = meow(
 
   Commands
     archive          Archive a date.
+    archive-site     Archive whole site.
     parse            Parse specific page.
 
   Options
@@ -56,6 +59,19 @@ const cli = meow(
 // Run archive
 if (cli.input[0] === "archive") {
   archive(cli.flags.output, cli.flags.date, cli.flags.overwrite);
+}
+
+// Run whole site archive
+if (cli.input[0] === "archive-site") {
+  archiveSite(
+    "https://january6th.house.gov/",
+    pathJoin(
+      cli.flags.output,
+      cli.flags.date,
+      `${cli.flags.date}-january6th.house.gov.zip`
+    ),
+    cli.flags.overwrite
+  );
 }
 
 // Run parse
