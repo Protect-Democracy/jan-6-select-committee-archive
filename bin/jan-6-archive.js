@@ -11,22 +11,22 @@ import archive from "../lib/archive.js";
 // Setup CLI
 const cli = meow(
   `
-	Usage
-	  $ jan-6-archive <command>
+  Usage
+    $ jan-6-archive <command>
 
   Commands
     archive          Archive a date.
     parse            Parse specific page.
 
-	Options
+  Options
     --output, -O     Path to output to; defaults to "output".
-	  --date, -d       Specific date in YYYY-MM-DD format; defaults to today.
+    --date, -d       Specific date in YYYY-MM-DD format; defaults to today.
     --id, -i         Specific page id.
     --overwrite, -o  Overwrite existing files.
 
-	Examples
-	  $ jan-6-archive archive
-	  $ jan-6-archive parse --id press-release-2022-12-21
+  Examples
+    $ jan-6-archive archive
+    $ jan-6-archive parse --id press-release-2022-12-21
 `,
   {
     importMeta: import.meta,

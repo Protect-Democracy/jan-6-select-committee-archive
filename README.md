@@ -1,6 +1,6 @@
 # Jan 6 Select Committee archive
 
-Some simple scripts to archive the Jan 6 Select Committee materials released in December of 2022.
+Utility to archive the Jan 6 Select Committee materials released in December of 2022.
 
 ## Install and setup
 
@@ -10,20 +10,34 @@ Some simple scripts to archive the Jan 6 Select Committee materials released in 
 
 ## Usage
 
-Archive all files. This will parse the relevant web page(s) and compiled a list of files to download, then download them.
-
 ```bash
-node index.js
+  Usage
+    $ jan-6-archive <command>
+
+  Commands
+    archive          Archive a date.
+    parse            Parse specific page.
+
+  Options
+    --output, -O     Path to output to; defaults to "output".
+    --date, -d       Specific date in YYYY-MM-DD format; defaults to today.
+    --id, -i         Specific page id.
+    --overwrite, -o  Overwrite existing files.
+
+  Examples
+    $ jan-6-archive archive
+    $ jan-6-archive parse --id press-release-2022-12-21
 ```
 
-This will output to the `output/DATE/` directory the following:
+## Archive structure
 
-- `screenshot.png` - A screenshot of the page.
-- `document-urls.csv` - A CSV with the basic documents identified with their URLs.
-- `document-urls.json` - A JSON file with the same data as the CSV.
-- `documents.csv` - A CSV with the same data as `document-urls.csv` but with extra fields that describe what files have been downloaded locally.
-- `documents.json` - A JSON file with the same data as the CSV.
-- `documents/*` - A directory with the downloaded files.
+- `inventory.json` - JSON file with a list of all the files in the archive.
+- `inventory.csv` - CSV version.
+- `DATE/inventory.json` - JSON file with a list of all the files for that date.
+- `DATE/inventory.csv` - CSV version.
+- `DATE/PAGE_ID-screenshot.png` - Screenshot of page.
+- `DATE/PAGE_ID/*` - Materials downloaded.
+- `DATE/DATE.zip` - Zip of everything of date.
 
 ## Backup
 
