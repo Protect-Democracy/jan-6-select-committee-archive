@@ -6,9 +6,12 @@
 
 // Dependencies
 import { join as pathJoin } from "path";
+import { readDataSync } from "indian-ocean";
 import meow from "meow";
+import { pages } from "../lib/config.js";
 import archive from "../lib/archive.js";
 import archiveSite from "../lib/archive-site.js";
+import parsers from "../lib/parsers/index.js";
 
 // Setup CLI
 const cli = meow(
@@ -76,5 +79,17 @@ if (cli.input[0] === "archive-site") {
 
 // Run parse
 if (cli.input[0] === "parse") {
-  console.log("TO IMPLEMENT");
+  // Get pages entry
+  const page = pages.find((page) => page.id === cli.flags.id);
+
+  if (!page) {
+    throw new Error(`Unable to find page id "${cli.flags.id}".`);
+  }
+
+  if (!parsers[page.id]) {
+    throw new Error(`Unable to find parser for page id "${page.id}".`);
+  }
+
+  console.log(parsers);
+  console.log(await parsers[page.id](page));
 }
