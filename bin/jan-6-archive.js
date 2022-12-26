@@ -90,6 +90,8 @@ if (cli.input[0] === "parse") {
     throw new Error(`Unable to find parser for page id "${page.id}".`);
   }
 
-  console.log(parsers);
-  console.log(await parsers[page.id](page));
+  const materials = await parsers[page.id](page);
+  console.log(materials);
+  console.log();
+  console.log(`Done.  Found ${materials.length} materials.`);
 }

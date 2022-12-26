@@ -49,7 +49,7 @@ Archive command parses and downloads all materials from given pages and saves th
 
 The following environment variables can be set to help configure:
 
-- `ARCHIVE_URL_BASE` - The base URL to where the archive will be hosted; should be something like https://example.com.
+- `ARCHIVE_URL_BASE` - The base URL to where the archive will be hosted; should be something like `https://example.com`.
 
 ## Backup
 
@@ -58,7 +58,7 @@ The following environment variables can be set to help configure:
 To backup files to S3, do something like the following:
 
 ```bash
-aws s3 sync output/ s3://my-bucket/jan6-select-committee-archive/
+aws s3 sync output/ s3://my-bucket/jan6-select-committee-archive/ --exclude "*.DS_Store*"
 ```
 
 ## Suggested workflow
@@ -67,4 +67,5 @@ aws s3 sync output/ s3://my-bucket/jan6-select-committee-archive/
 1. Archive specific materials: `./bin/jan-6-archive archive`
 1. Archive whole site: `./bin/jan-6-archive archive-site`
 1. Look over archived files.
-1. Upload to S3: `aws s3 sync output/ s3://my-bucket/jan6-select-committee-archive/`
+1. See what will happen: `aws s3 sync output/ s3://select-committee-on-jan-6-archive/ --exclude "*.DS_Store*" --dryrun`
+1. Upload to S3: `aws s3 sync output/ s3://select-committee-on-jan-6-archive/ --exclude "*.DS_Store*"`
