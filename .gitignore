@@ -1,6 +1,8 @@
 .vscode/
 output/
+output-*
 .DS_Store
+tests/test-output
 
 # From https://github.com/github/gitignore/blob/main/Node.gitignore
 

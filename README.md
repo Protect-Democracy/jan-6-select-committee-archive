@@ -51,6 +51,18 @@ The following environment variables can be set to help configure:
 
 - `ARCHIVE_URL_BASE` - The base URL to where the archive will be hosted; should be something like `https://example.com`.
 
+## Sources and data
+
+### Pages
+
+Pages that are parsed are managed in `data/select-committee-pages.csv`. This describes URLs to attempt to parse and download materials from. Corresponding parsers are found in `lib/parsers/`.
+
+The [final report](https://january6th.house.gov/sites/democrats.january6th.house.gov/files/Report_FinalReport_Jan6SelectCommittee.pdf) is considered a page to download materials from – most of which are external. Due to difficulty parsing the PDF on the fly, the PDF has been converted to HTML via Adobe Acrobat Pro and saved in `data/final-report/`. Even with this, many URLs are either not parsed or not parsed accurately.
+
+### Direct materials
+
+Some direct materials are managed in `data/select-committee-materials.csv`. These are materials that are not on a page, but are linked to directly. These are downloaded and saved in the archive under `direct-materials`.
+
 ## Backup
 
 ### S3

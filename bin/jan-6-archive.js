@@ -45,7 +45,7 @@ const cli = meow(
       date: {
         type: "string",
         alias: "d",
-        default: new Date().toISOString().split("T")[0],
+        default: new Date().toLocaleString("sv").split(" ")[0],
       },
       id: {
         type: "string",
@@ -91,7 +91,7 @@ if (cli.input[0] === "parse") {
   }
 
   const materials = await parsers[page.id](page);
-  console.log(materials);
+  console.log(JSON.stringify(materials, null, 2));
   console.log();
   console.log(`Done.  Found ${materials.length} materials.`);
 }
