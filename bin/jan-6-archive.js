@@ -65,13 +65,23 @@ if (cli.input[0] === "archive") {
 }
 
 // Run whole site archive
-if (cli.input[0] === "archive-site") {
-  archiveSite(
+if (cli.input[0] === "archive-sites") {
+  await archiveSite(
     "https://january6th.house.gov/",
     pathJoin(
       cli.flags.output,
       cli.flags.date,
       `${cli.flags.date}-january6th.house.gov.zip`
+    ),
+    cli.flags.overwrite
+  );
+
+  await archiveSite(
+    "https://house.devindc.com/",
+    pathJoin(
+      cli.flags.output,
+      cli.flags.date,
+      `${cli.flags.date}-house.devindc.com.zip`
     ),
     cli.flags.overwrite
   );
