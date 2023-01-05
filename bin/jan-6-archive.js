@@ -61,7 +61,7 @@ const cli = meow(
 
 // Run archive
 if (cli.input[0] === "archive") {
-  archive(cli.flags.output, cli.flags.date, cli.flags.overwrite);
+  archive(cli.flags.output, cli.flags.date, cli.flags.overwrite, cli.flags.id);
 }
 
 // Run whole site archive
