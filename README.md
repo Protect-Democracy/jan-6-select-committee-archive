@@ -6,7 +6,7 @@ The following provides links and descriptions to the materials that have been ar
 
 Top-level inventories: [JSON](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/inventory.json), [CSV](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/inventory.csv)
 
-| Date       | Inventories                                                                                                                                                                                                  | Materials                                                                                             | Notes                                                                                                                                                                                            |
+| Set        | Inventories                                                                                                                                                                                                  | Materials                                                                                             | Notes                                                                                                                                                                                            |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 2022-12-23 | [JSON](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2022-12-23/inventory.json), [CSV](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2022-12-23/inventory.csv) | [ZIP](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2022-12-23/2022-12-23.zip) |                                                                                                                                                                                                  |
 | 2022-12-26 | [JSON](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2022-12-26/inventory.json), [CSV](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2022-12-26/inventory.csv) | [ZIP](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2022-12-26/2022-12-26.zip) |                                                                                                                                                                                                  |
@@ -20,14 +20,14 @@ Top-level inventories: [JSON](https://select-committee-on-jan-6-archive.s3.us-we
 
 ### File structure
 
-Depending on the version/date of the archive, it should follow something like this:
+Depending on the version/set of the archive, it should follow something like this:
 
 - `inventory.json` - JSON file with a list of all the different sets/dates of archives, and includes list of materials.
 - `inventory.csv` - CSV version of JSON file; does not include list of materials.
-- `DATE/inventory.json` - JSON file with a list of all the materials for that date.
-- `DATE/inventory.csv` - CSV version of the JSON file.
-- `DATE/SOURCE/*` - Materials downloaded.
-- `DATE/DATE.zip` - Zip of everything of date.
+- `SET/inventory.json` - JSON file with a list of all the materials for that set.
+- `SET/inventory.csv` - CSV version of the JSON file.
+- `SET/SOURCE/*` - Materials downloaded.
+- `SET/SET.zip` - Zip of everything in that set.
 
 ## Collecting materials
 
