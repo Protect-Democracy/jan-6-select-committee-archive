@@ -6,12 +6,12 @@
 
 // Dependencies
 import { join as pathJoin } from "path";
-import { readDataSync } from "indian-ocean";
 import meow from "meow";
-import { pages } from "../lib/config.js";
+import { sources } from "../lib/config.js";
 import archive from "../lib/archive.js";
-import archiveSite from "../lib/archive-site.js";
 import parsers from "../lib/parsers/index.js";
+import migrate from "../lib/migrate.js";
+import { cliInput } from "../lib/utils.js";
 
 // Setup CLI
 const cli = meow(
@@ -21,18 +21,21 @@ const cli = meow(
 
   Commands
     archive          Archive a date.
-    archive-site     Archive whole site.
-    parse            Parse specific page.
+    parse            Parse a specific source and output found materials.
+    migrate          Migrate data.
 
   Options
     --output, -O     Path to output to; defaults to "output".
     --date, -d       Specific date in YYYY-MM-DD format; defaults to today.
-    --id, -i         Specific page id.
+    --id, -i         Specific source for archive or migration id.
     --overwrite, -o  Overwrite existing files.
 
   Examples
     $ jan-6-archive archive
+    $ jan-6-archive archive -O jan-6-archive -d 2020-01-01
+    $ jan-6-archive archive --id specific-source
     $ jan-6-archive parse --id press-release-2022-12-21
+    $ jan-6-archive migrate --id 20200101
 `,
   {
     importMeta: import.meta,
@@ -45,7 +48,7 @@ const cli = meow(
       date: {
         type: "string",
         alias: "d",
-        default: new Date().toLocaleString("sv").split(" ")[0],
+        default: "latest",
       },
       id: {
         type: "string",
@@ -61,47 +64,49 @@ const cli = meow(
 
 // Run archive
 if (cli.input[0] === "archive") {
+  const sure = await cliInput(
+    `Are you sure you want to archive "${cli.flags.date}"; this may overwrite existing data? (y/n) `
+  );
+  if (!sure.match(/y(es)?/i)) {
+    console.error("Exiting.");
+    process.exit(0);
+  }
+
   archive(cli.flags.output, cli.flags.date, cli.flags.overwrite, cli.flags.id);
-}
-
-// Run whole site archive
-if (cli.input[0] === "archive-sites") {
-  await archiveSite(
-    "https://january6th.house.gov/",
-    pathJoin(
-      cli.flags.output,
-      cli.flags.date,
-      `${cli.flags.date}-january6th.house.gov.zip`
-    ),
-    cli.flags.overwrite
-  );
-
-  await archiveSite(
-    "https://house.devindc.com/",
-    pathJoin(
-      cli.flags.output,
-      cli.flags.date,
-      `${cli.flags.date}-house.devindc.com.zip`
-    ),
-    cli.flags.overwrite
-  );
 }
 
 // Run parse
 if (cli.input[0] === "parse") {
-  // Get pages entry
-  const page = pages.find((page) => page.id === cli.flags.id);
-
-  if (!page) {
-    throw new Error(`Unable to find page id "${cli.flags.id}".`);
+  if (!cli.flags.id) {
+    throw new Error(
+      `Please provide source ID (--id) as date, ex. press-release-2020-01-01.`
+    );
   }
 
-  if (!parsers[page.id]) {
-    throw new Error(`Unable to find parser for page id "${page.id}".`);
+  // Get sources entry
+  const source = sources.find((source) => source.id === cli.flags.id);
+
+  if (!source) {
+    throw new Error(`Unable to find source id "${cli.flags.id}".`);
   }
 
-  const materials = await parsers[page.id](page);
+  if (!parsers[source.id]) {
+    throw new Error(`Unable to find parser for source id "${page.id}".`);
+  }
+
+  const materials = await parsers[source.id](source);
   console.log(JSON.stringify(materials, null, 2));
   console.log();
   console.log(`Done.  Found ${materials.length} materials.`);
+}
+
+// Migrate
+if (cli.input[0] === "migrate") {
+  if (!cli.flags.id) {
+    throw new Error(
+      `Please provide migration ID (--id) as date, ex. 20200101.`
+    );
+  }
+
+  await migrate(cli.flags.id);
 }
