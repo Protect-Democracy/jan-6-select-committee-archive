@@ -20,13 +20,13 @@ const cli = meow(
     $ jan-6-archive <command>
 
   Commands
-    archive          Archive a date.
-    parse            Parse a specific source and output found materials.
-    migrate          Migrate data.
+    archive          Run archive and assign to a set.
+    parse            Parse a specific source and output found materials that would be preserved.
+    migrate          Run one-off migration.
 
   Options
     --output, -O     Path to output to; defaults to "output".
-    --date, -d       Specific date in YYYY-MM-DD format; defaults to today.
+    --set, -s        Set to label this archive, defaults to "latest".
     --id, -i         Specific source for archive or migration id.
     --overwrite, -o  Overwrite existing files.
 
@@ -45,9 +45,9 @@ const cli = meow(
         alias: "O",
         default: "output",
       },
-      date: {
+      set: {
         type: "string",
-        alias: "d",
+        alias: "s",
         default: "latest",
       },
       id: {
@@ -65,21 +65,21 @@ const cli = meow(
 // Run archive
 if (cli.input[0] === "archive") {
   const sure = await cliInput(
-    `Are you sure you want to archive "${cli.flags.date}"; this may overwrite existing data? (y/n) `
+    `Are you sure you want to archive "${cli.flags.set}"; this may overwrite existing data? (y/n) `
   );
   if (!sure.match(/y(es)?/i)) {
     console.error("Exiting.");
     process.exit(0);
   }
 
-  archive(cli.flags.output, cli.flags.date, cli.flags.overwrite, cli.flags.id);
+  archive(cli.flags.output, cli.flags.set, cli.flags.overwrite, cli.flags.id);
 }
 
 // Run parse
 if (cli.input[0] === "parse") {
   if (!cli.flags.id) {
     throw new Error(
-      `Please provide source ID (--id) as date, ex. press-release-2020-01-01.`
+      `Please provide source ID (--id), ex. press-release-2020-01-01.`
     );
   }
 

@@ -16,6 +16,7 @@ Top-level inventories: [JSON](https://select-committee-on-jan-6-archive.s3.us-we
 | 2023-01-01 | [JSON](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2023-01-01/inventory.json), [CSV](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2023-01-01/inventory.csv) | [ZIP](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2023-01-01/2023-01-01.zip) |                                                                                                                                                                                                  |
 | 2023-01-02 | [JSON](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2023-01-02/inventory.json), [CSV](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2023-01-02/inventory.csv) | [ZIP](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2023-01-02/2023-01-02.zip) |                                                                                                                                                                                                  |
 | 2023-01-03 | [JSON](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2023-01-03/inventory.json), [CSV](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/2023-01-03/inventory.csv) |                                                                                                       | Includes [GPO materials](https://www.govinfo.gov/collection/january-6th-committee-final-report?path=/GPO/January%206th%20Committee%20Final%20Report%20and%20Supporting%20Materials%20Collection) |
+| latest     | [JSON](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/latest/inventory.json), [CSV](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/latest/inventory.csv)         |                                                                                                       | Ongoing set of materials; see [data/sources.csv](https://github.com/Protect-Democracy/jan-6-select-committee-archive/blob/main/data/sources.csv) for list of sources. **NOT UPLOADED YET**       |
 
 ### File structure
 
@@ -47,13 +48,13 @@ Provides a CLI tool to run the archive process. Run `./bin/jan-6-archive` to see
     $ jan-6-archive <command>
 
   Commands
-    archive          Archive a date.
-    parse            Parse a specific source and output found materials.
-    migrate          Migrate data.
+    archive          Run archive and assign to a set.
+    parse            Parse a specific source and output found materials that would be preserved.
+    migrate          Run one-off migration.
 
   Options
     --output, -O     Path to output to; defaults to "output".
-    --date, -d       Specific date in YYYY-MM-DD format; defaults to today.
+    --set, -s        Set to label this archive, defaults to "latest".
     --id, -i         Specific source for archive or migration id.
     --overwrite, -o  Overwrite existing files.
 
@@ -65,31 +66,34 @@ Provides a CLI tool to run the archive process. Run `./bin/jan-6-archive` to see
     $ jan-6-archive migrate --id 20200101
 ```
 
-#### Archive
+#### Archive command
 
-Archive command parses and downloads all materials from given pages and saves them locally, grouped by date.
+Archive command parses sources and downloads all materials found and saves them locally, grouped by in the assigned `set`.
 
-## Configure
+- Given that this has moved to an ongoing archive, the default `--set` parameter is `latest` and should likely not be changed.
+- **IMPORTANT TODO**: Currently this utility does not get the current archive from where it is hosted, so if you are starting from scratch, make sure to download the [current archive](https://select-committee-on-jan-6-archive.s3.us-west-2.amazonaws.com/inventory.json) and put it in the `--output` directory.
+- Creates a backup of the current local inventory in `.cache/inventories/`.
+
+#### Parse command
+
+Use this to run a specific parser and see what materials would be downloaded. This is useful for debugging and testing. Parsers are found in `lib/parsers/`.
+
+#### Migrate command
+
+Use this to run a one-off migration. This is useful to restructure the archive or inventory. Migrations are found in `lib/migrations/`.
+
+### Configure
 
 The following environment variables can be set to help configure:
 
+- `DEBUG` - Utilize something like `DEBUG=j6*` to see debug logs for this project only.
 - `ARCHIVE_URL_BASE` - The base URL to where the archive will be hosted; should be something like `https://example.com`.
 
-## Sources and data
+### Sources
 
-### Pages
+The sources are defined in `data/sources.csv`.
 
-Pages that are parsed are managed in `data/select-committee-pages.csv`. This describes URLs to attempt to parse and download materials from. Corresponding parsers are found in `lib/parsers/`.
-
-The [final report](https://january6th.house.gov/sites/democrats.january6th.house.gov/files/Report_FinalReport_Jan6SelectCommittee.pdf) is considered a page to download materials from – most of which are external. Due to difficulty parsing the PDF on the fly, the PDF has been converted to HTML via Adobe Acrobat Pro and saved in `data/final-report/`. Even with this, many URLs are either not parsed or not parsed accurately.
-
-### Direct materials
-
-Some direct materials are managed in `data/select-committee-materials.csv`. These are materials that are not on a page, but are linked to directly. These are downloaded and saved in the archive under `direct-materials`.
-
-## Backup
-
-### S3
+### Sync with S3
 
 To backup files to S3, do something like the following:
 
@@ -97,11 +101,11 @@ To backup files to S3, do something like the following:
 aws s3 sync output/ s3://my-bucket/jan6-select-committee-archive/ --exclude "*.DS_Store*"
 ```
 
-## Suggested workflow
+### Suggested workflow
 
 1. Set up environment variables.
+1. Get copy of hosted `inventory.json` and put in `output/` (or wherever you set `--output` to).
 1. Archive specific materials: `./bin/jan-6-archive archive`
-1. Archive whole site: `./bin/jan-6-archive archive-site`
 1. Look over archived files.
 1. See what will happen: `aws s3 sync output/ s3://select-committee-on-jan-6-archive/ --exclude "*.DS_Store*" --dryrun`
 1. Upload to S3: `aws s3 sync output/ s3://select-committee-on-jan-6-archive/ --exclude "*.DS_Store*"`
